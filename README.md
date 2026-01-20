@@ -1,7 +1,7 @@
-# 🌦 Rainfall Prediction using XGBoost
+# 🌦 Rainfall Prediction using RandomForestClassifier 
 
 A machine learning–powered web application that predicts whether it will **rain tomorrow** based on historical weather conditions.  
-The model is built using **XGBoost** and achieves approximately **86% accuracy** on a large, cleaned Australian weather dataset.
+The model is built using **RandomForestClassifier ** and achieves approximately **86% accuracy** on a large, cleaned Australian weather dataset.
 
 ---
 
@@ -12,7 +12,7 @@ docker : https://hub.docker.com/r/mohdmusheer/weather-rain-prediction
 ## 🚀 Features
 
 - 🌧 Predicts **Rain / No Rain** for the next day
-- ⚡ Powered by **XGBoost Classifier**
+- ⚡ Powered by **RandomForestClassifier**
 - 🧹 Trained on a **cleaned & leakage-free dataset** (~500K rows)
 - 🎨 Modern, interactive UI with dynamic background changes
 - ⏳ Loading indicator during prediction
@@ -24,7 +24,7 @@ docker : https://hub.docker.com/r/mohdmusheer/weather-rain-prediction
 
 ## 🧠 Machine Learning Model
 
-- **Algorithm:** XGBoost (Extreme Gradient Boosting)
+- **Algorithm:** RandomForestClassifier 
 - **Problem Type:** Binary Classification
 - **Target Variable:** `RainTomorrow`  
   - `1` → Rain  
@@ -55,7 +55,7 @@ The UI allows users to:
 
 ## 🧩 Tech Stack
 Metric,Value
-Algorithm,XGBoost Classifier
+Algorithm,RandomForestClassifier 
 Dataset Size,"50,000 Rows"
 Accuracy Score,86%
 Target Variable,RainTomorrow (Binary: Rain/No Rain)
@@ -78,7 +78,7 @@ Copy code
 
 ### 1️⃣ Install dependencies
 ```bash
-pip install fastapi uvicorn pandas scikit-learn xgboost joblib
+pip install fastapi uvicorn pandas scikit-learn==1.6.1 RandomForestClassifier  joblib
 2️⃣ Start the API server
 bash
 Copy code
@@ -154,14 +154,14 @@ Copy code
 ## 🏆 Why this README is strong
 
 ✔ Clear problem statement  
-✔ Mentions **XGBoost explicitly**  
+✔ Mentions **RandomForestClassifier explicitly**  
 ✔ Honest accuracy (86%)  
 ✔ Explains data leakage handling  
 ✔ Recruiter-friendly  
 ✔ GitHub-optimized  
 
 If you want next:
-- Add **badges** (Python, XGBoost, FastAPI)
+- Add **badges** (Python, RandomForestClassifier , FastAPI)
 - Short **project demo GIF**
 - Docker instructions
 - Cloud deployment guide
