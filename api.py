@@ -18,7 +18,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-model = joblib.load("weather_predict.pkl")
+model = joblib.load("weather_predicts.pkl")
 
 @app.post("/predict")
 def predict(data: WeatherData):
