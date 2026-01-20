@@ -7,7 +7,7 @@ The model is built using **XGBoost** and achieves approximately **86% accuracy**
 
 live : https://weather-rain-prediction.onrender.com
 
-docker : 
+docker : https://hub.docker.com/r/mohdmusheer/weather-rain-prediction
 
 ## 🚀 Features
 
