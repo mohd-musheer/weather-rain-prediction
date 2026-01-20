@@ -3,68 +3,93 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Weather Predictor Pro</title>
+    <title>Atmospheric Weather Predictor</title>
     <style>
-        :root {
-            --bg-default: #f4f7f6;
-            --bg-rain: #4a69bd;
-            --bg-sunny: #f1c40f;
-        }
-        
-        body { 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            background-color: var(--bg-default); 
-            margin: 0; 
-            padding: 20px; 
-            transition: background-color 0.8s ease-in-out; /* Background color transition */
+        /* Animated Blue-Purple Gradient Background */
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(-45deg, #0f0c29, #302b63, #24243e, #6a11cb, #2575fc);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite; /* Automatic change without interaction */
+            transition: background 1s ease;
         }
 
-        .container { 
-            max-width: 900px; 
-            margin: auto; 
-            background: rgba(255, 255, 255, 0.95); 
-            padding: 30px; 
-            border-radius: 12px; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2); 
-            position: relative;
-            z-index: 1;
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
+
+        .container {
+            width: 100%;
+            max-width: 850px;
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+            position: relative;
+        }
+
+        h2 { text-align: center; color: #1a1a2e; margin-bottom: 30px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; }
 
         /* Demo Button */
         .demo-btn {
             position: absolute;
             top: 20px;
             right: 20px;
-            background-color: #e67e22;
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
             color: white;
             border: none;
-            padding: 10px 18px;
-            border-radius: 20px;
+            padding: 10px 20px;
+            border-radius: 50px;
             cursor: pointer;
-            font-weight: bold;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(106, 17, 203, 0.3);
+            transition: 0.3s;
         }
+        .demo-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(106, 17, 203, 0.4); }
 
-        /* Form Layout */
-        .grid-container { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; }
+        .grid-container { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
         .form-group { display: flex; flex-direction: column; }
-        label { margin-bottom: 5px; font-weight: 600; color: #333; font-size: 0.85em; }
-        input, select { padding: 10px; border: 1px solid #ccc; border-radius: 6px; }
+        label { margin-bottom: 8px; font-weight: 600; color: #444; font-size: 0.85rem; }
         
-        .full-width { grid-column: span 2; }
-        button[type="submit"] { 
-            background-color: #2c3e50; 
-            color: white; padding: 15px; border: none; border-radius: 6px; 
-            cursor: pointer; font-size: 1.1em; margin-top: 10px;
+        input, select {
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
         }
+        input:focus, select:focus { border-color: #6a11cb; box-shadow: 0 0 8px rgba(106, 17, 203, 0.2); outline: none; }
 
-        /* Loading Overlay */
+        button[type="submit"] {
+            grid-column: span 2;
+            padding: 15px;
+            margin-top: 10px;
+            border: none;
+            border-radius: 10px;
+            background: #1a1a2e;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        button[type="submit"]:hover { background: #302b63; letter-spacing: 1px; }
+
+        /* Loader */
         #loader {
             display: none;
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.7);
+            background: rgba(15, 12, 41, 0.85);
             z-index: 9999;
             flex-direction: column;
             justify-content: center;
@@ -72,19 +97,22 @@
             color: white;
         }
         .spinner {
-            width: 50px; height: 50px;
-            border: 5px solid #f3f3f3;
-            border-top: 5px solid #3498db;
+            width: 60px; height: 60px;
+            border: 6px solid rgba(255,255,255,0.1);
+            border-top: 6px solid #2575fc;
             border-radius: 50%;
             animation: spin 1s linear infinite;
-            margin-bottom: 15px;
         }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
 
-        /* Result Box */
-        #result { 
-            margin-top: 20px; padding: 20px; border-radius: 8px; 
-            text-align: center; font-weight: bold; font-size: 1.5em; display: none; 
+        #result {
+            margin-top: 25px;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            font-size: 1.4rem;
+            font-weight: 700;
+            display: none;
         }
     </style>
 </head>
@@ -92,62 +120,108 @@
 
 <div id="loader">
     <div class="spinner"></div>
-    <p>Consulting the Clouds...</p>
+    <h3 style="margin-top: 20px;">Analyzing Weather Patterns...</h3>
 </div>
 
 <div class="container">
-    <button type="button" class="demo-btn" onclick="fillDemoData()">✨ Fill Demo</button>
-    <h2 style="margin-top:0">Weather Predictor</h2>
+    <button type="button" class="demo-btn" onclick="fillDemoData()">✨ Load Sample Data</button>
+    <h2>Weather Predictor</h2>
     
     <form id="predictionForm">
         <div class="grid-container">
             <div class="form-group">
                 <label>Location</label>
-                <select name="Location">
-                    <option value="Sydney">Sydney</option>
-                    <option value="Melbourne">Melbourne</option>
-                    <option value="Perth">Perth</option>
+                <select name="Location" id="Location">
+                    <option value="Cairns">Cairns</option>
+                    <option value="Cobar">Cobar</option><option value="CoffsHarbour">CoffsHarbour</option>
+                    <option value="Moree">Moree</option><option value="NorfolkIsland">NorfolkIsland</option>
+                    <option value="Sydney">Sydney</option><option value="SydneyAirport">SydneyAirport</option>
+                    <option value="WaggaWagga">WaggaWagga</option><option value="Williamtown">Williamtown</option>
+                    <option value="Canberra">Canberra</option><option value="Sale">Sale</option>
+                    <option value="MelbourneAirport">MelbourneAirport</option><option value="Melbourne">Melbourne</option>
+                    <option value="Mildura">Mildura</option><option value="Portland">Portland</option>
+                    <option value="Watsonia">Watsonia</option><option value="Brisbane">Brisbane</option>
+                    <option value="Townsville">Townsville</option><option value="MountGambier">MountGambier</option>
+                    <option value="Nuriootpa">Nuriootpa</option><option value="Woomera">Woomera</option>
+                    <option value="PerthAirport">PerthAirport</option><option value="Perth">Perth</option>
+                    <option value="Hobart">Hobart</option><option value="AliceSprings">AliceSprings</option>
                     <option value="Darwin">Darwin</option>
                 </select>
             </div>
-            
-            <div class="form-group"><label>Min Temp</label><input type="number" step="0.1" name="MinTemp" required></div>
-            <div class="form-group"><label>Max Temp</label><input type="number" step="0.1" name="MaxTemp" required></div>
+
+            <div class="form-group"><label>Min Temp (°C)</label><input type="number" step="0.1" name="MinTemp" required></div>
+            <div class="form-group"><label>Max Temp (°C)</label><input type="number" step="0.1" name="MaxTemp" required></div>
             <div class="form-group"><label>Rainfall (mm)</label><input type="number" step="0.1" name="Rainfall" required></div>
             <div class="form-group"><label>Evaporation</label><input type="number" step="0.1" name="Evaporation" required></div>
             <div class="form-group"><label>Sunshine</label><input type="number" step="0.1" name="Sunshine" required></div>
+
             <div class="form-group">
-                <label>Wind Gust Dir</label>
-                <select name="WindGustDir"><option value="W">W</option><option value="E">E</option></select>
+                <label>Wind Gust Direction</label>
+                <select name="WindGustDir">
+                    <option value="NE">NE</option><option value="SSW">SSW</option>
+                    <option value="S">S</option><option value="NNE">NNE</option>
+                    <option value="WNW">WNW</option><option value="N">N</option>
+                    <option value="SE">SE</option><option value="ENE">ENE</option>
+                    <option value="E">E</option><option value="SW">SW</option>
+                    <option value="W">W</option><option value="WSW">WSW</option>
+                    <option value="NNW">NNW</option><option value="ESE">ESE</option>
+                    <option value="SSE">SSE</option><option value="NW">NW</option>
+                </select>
             </div>
-            <div class="form-group"><label>Wind Speed 9am</label><input type="number" name="WindSpeed9am" required></div>
-            <div class="form-group"><label>Wind Speed 3pm</label><input type="number" name="WindSpeed3pm" required></div>
-            <div class="form-group"><label>Humidity 9am</label><input type="number" name="Humidity9am" required></div>
-            <div class="form-group"><label>Humidity 3pm</label><input type="number" name="Humidity3pm" required></div>
-            <div class="form-group"><label>Pressure 9am</label><input type="number" step="0.1" name="Pressure9am" required></div>
-            <div class="form-group"><label>Pressure 3pm</label><input type="number" step="0.1" name="Pressure3pm" required></div>
-            <div class="form-group"><label>Cloud 9am</label><input type="number" name="Cloud9am" required></div>
-            <div class="form-group"><label>Cloud 3pm</label><input type="number" name="Cloud3pm" required></div>
-            <div class="form-group"><label>Temp 9am</label><input type="number" step="0.1" name="Temp9am" required></div>
-            <div class="form-group"><label>Temp 3pm</label><input type="number" step="0.1" name="Temp3pm" required></div>
-            <div class="form-group"><label>WindGustSpeed</label><input type="number" name="WindGustSpeed" required></div>
+
+            <div class="form-group"><label>Wind Gust Speed</label><input type="number" name="WindGustSpeed" required></div>
+
             <div class="form-group">
-                <label>WindDir9am</label>
-                <select name="WindDir9am"><option value="W">W</option></select>
+                <label>Wind Dir (9am)</label>
+                <select name="WindDir9am">
+                    <option value="W">W</option><option value="ENE">ENE</option>
+                    <option value="SSE">SSE</option><option value="NNE">NNE</option>
+                    <option value="WNW">WNW</option><option value="NW">NW</option>
+                    <option value="N">N</option><option value="S">S</option>
+                    <option value="SE">SE</option><option value="NE">NE</option>
+                    <option value="SSW">SSW</option><option value="E">E</option>
+                    <option value="NNW">NNW</option><option value="ESE">ESE</option>
+                    <option value="WSW">WSW</option><option value="SW">SW</option>
+                </select>
             </div>
+
             <div class="form-group">
-                <label>WindDir3pm</label>
-                <select name="WindDir3pm"><option value="W">W</option></select>
+                <label>Wind Dir (3pm)</label>
+                <select name="WindDir3pm">
+                    <option value="NE">NE</option><option value="SW">SW</option>
+                    <option value="SSE">SSE</option><option value="NNW">NNW</option>
+                    <option value="WSW">WSW</option><option value="WNW">WNW</option>
+                    <option value="S">S</option><option value="ENE">ENE</option>
+                    <option value="N">N</option><option value="SE">SE</option>
+                    <option value="NNE">NNE</option><option value="NW">NW</option>
+                    <option value="E">E</option><option value="ESE">ESE</option>
+                    <option value="SSW">SSW</option><option value="W">W</option>
+                </select>
             </div>
+
+            <div class="form-group"><label>Wind Speed (9am)</label><input type="number" name="WindSpeed9am" required></div>
+            <div class="form-group"><label>Wind Speed (3pm)</label><input type="number" name="WindSpeed3pm" required></div>
+            <div class="form-group"><label>Humidity (9am)</label><input type="number" name="Humidity9am" required></div>
+            <div class="form-group"><label>Humidity (3pm)</label><input type="number" name="Humidity3pm" required></div>
+            <div class="form-group"><label>Pressure (9am)</label><input type="number" step="0.1" name="Pressure9am" required></div>
+            <div class="form-group"><label>Pressure (3pm)</label><input type="number" step="0.1" name="Pressure3pm" required></div>
+            <div class="form-group"><label>Cloud (9am)</label><input type="number" name="Cloud9am" required></div>
+            <div class="form-group"><label>Cloud (3pm)</label><input type="number" name="Cloud3pm" required></div>
+            <div class="form-group"><label>Temp (9am)</label><input type="number" step="0.1" name="Temp9am" required></div>
+            <div class="form-group"><label>Temp (3pm)</label><input type="number" step="0.1" name="Temp3pm" required></div>
+            
             <div class="form-group">
                 <label>Rain Today</label>
-                <select name="RainToday"><option value="No">No</option><option value="Yes">Yes</option></select>
+                <select name="RainToday">
+                    <option value="No">No</option>
+                    <option value="Yes">Yes</option>
+                </select>
             </div>
-            <div class="form-group"><label>RISK_MM</label><input type="number" step="0.1" name="RISK_MM" required></div>
+
             <div class="form-group"><label>Day</label><input type="number" name="Day" required></div>
             <div class="form-group"><label>Month</label><input type="number" name="Month" required></div>
 
-            <button type="submit" class="full-width">Get Prediction</button>
+            <button type="submit">Predict Tomorrow's Weather</button>
         </div>
     </form>
     <div id="result"></div>
@@ -155,58 +229,76 @@
 
 <script>
     function fillDemoData() {
-        const demo = {
-            Location: "Sydney", MinTemp: 15.2, MaxTemp: 25.5, Rainfall: 0.0, Evaporation: 5.2,
-            Sunshine: 10.1, WindGustDir: "W", WindGustSpeed: 35, WindDir9am: "W", WindDir3pm: "W",
-            WindSpeed9am: 15, WindSpeed3pm: 20, Humidity9am: 50, Humidity3pm: 40,
-            Pressure9am: 1018.2, Pressure3pm: 1015.5, Cloud9am: 1, Cloud3pm: 2,
-            Temp9am: 19.5, Temp3pm: 23.8, RainToday: "No", RISK_MM: 0.0, Day: 20, Month: 1
-        };
+        const data = {
+    'Location': 'Cairns',
+    'MinTemp': 18.5,
+    'MaxTemp': 22.1,
+    'Rainfall': 12.4,      // Significant rain already today
+    'Evaporation': 1.2,    // Low evaporation due to moisture
+    'Sunshine': 0.0,       // No sun, very cloudy
+    'WindGustDir': 'SSW',
+    'WindGustSpeed': 58,   // High wind speeds
+    'WindDir9am': 'S',
+    'WindDir3pm': 'SSW',
+    'WindSpeed9am': 24,
+    'WindSpeed3pm': 30,
+    'Humidity9am': 95,     // Very high humidity
+    'Humidity3pm': 92,     // Humidity remains high in afternoon
+    'Pressure9am': 1004.2, // Low pressure (cyclonic/stormy)
+    'Pressure3pm': 1001.5, // Pressure dropping further
+    'Cloud9am': 8,         // Fully overcast (8 oktas)
+    'Cloud3pm': 8,         // Remains overcast
+    'Temp9am': 19.0,
+    'Temp3pm': 20.5,
+    'RainToday': 'Yes',    // It is already raining
+    'Day': 4,
+    'Month': 8
+};
         const form = document.getElementById('predictionForm');
-        Object.entries(demo).forEach(([k, v]) => { if(form.elements[k]) form.elements[k].value = v; });
+        Object.entries(data).forEach(([key, val]) => {
+            if(form.elements[key]) form.elements[key].value = val;
+        });
     }
 
     document.getElementById('predictionForm').addEventListener('submit', async (e) => {
         e.preventDefault();
-        
-        // Show Loader
         document.getElementById('loader').style.display = 'flex';
         
         const formData = new FormData(e.target);
-        const data = Object.fromEntries(formData.entries());
+        const jsonData = Object.fromEntries(formData.entries());
 
-        // Numeric parsing
-        const nums = ['MinTemp','MaxTemp','Rainfall','Evaporation','Sunshine','WindGustSpeed',
-                      'WindSpeed9am','WindSpeed3pm','Humidity9am','Humidity3pm',
-                      'Pressure9am','Pressure3pm','Cloud9am','Cloud3pm','Temp9am','Temp3pm',
-                      'RISK_MM','Day','Month'];
-        nums.forEach(f => data[f] = parseFloat(data[f]));
+        // Parse numbers
+        const numFields = ['MinTemp','MaxTemp','Rainfall','Evaporation','Sunshine','WindGustSpeed','WindSpeed9am','WindSpeed3pm','Humidity9am','Humidity3pm','Pressure9am','Pressure3pm','Cloud9am','Cloud3pm','Temp9am','Temp3pm','Day','Month'];
+        numFields.forEach(field => jsonData[field] = parseFloat(jsonData[field]));
 
         try {
             const response = await fetch('/predict', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data)
+                body: JSON.stringify(jsonData)
             });
             const result = await response.json();
             
-            const resultDiv = document.getElementById('result');
-            resultDiv.style.display = 'block';
-            resultDiv.innerHTML = `Tomorrow: ${result.result}`;
+            const resDiv = document.getElementById('result');
+            resDiv.style.display = 'block';
+            resDiv.innerText = `Prediction: ${result.result}`;
 
-            // Handle Dynamic Background and Styling
-            if (result.result === 'Rain') {
-                document.body.style.backgroundColor = "#4a69bd"; // Deep Blue
-                resultDiv.style.cssText = "display:block; background:#d1ecf1; color:#0c5460; border:2px solid #0c5460;";
+            if(result.result === 'Rain') {
+                resDiv.style.background = "#e3f2fd";
+                resDiv.style.color = "#0d47a1";
+                resDiv.style.border = "2px solid #0d47a1";
+                document.body.style.animation = "none";
+                document.body.style.background = "#2c3e50"; // Switch to Stormy Grey-Blue
             } else {
-                document.body.style.backgroundColor = "#f1c40f"; // Sunny Gold
-                resultDiv.style.cssText = "display:block; background:#d4edda; color:#155724; border:2px solid #155724;";
+                resDiv.style.background = "#e8f5e9";
+                resDiv.style.color = "#1b5e20";
+                resDiv.style.border = "2px solid #1b5e20";
+                document.body.style.animation = "none";
+                document.body.style.background = "#f1c40f"; // Switch to Sunny Gold
             }
-
-        } catch (error) {
-            alert("Prediction failed. Ensure FastAPI is running.");
+        } catch (err) {
+            alert("Error: Check if FastAPI is running.");
         } finally {
-            // Hide Loader
             document.getElementById('loader').style.display = 'none';
         }
     });
